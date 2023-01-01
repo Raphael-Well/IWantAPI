@@ -11,4 +11,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\dotNet\.NetWebAPI\IWantAPI\src\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\dotNet\.NetWebAPI\IWantAPI\src\.editorconfig" />
+  </ItemGroup>
+
 </Project>
