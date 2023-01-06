@@ -5,7 +5,7 @@ namespace IWantAPI.Endpoints.Employees;
 
 public class EmployeePost
 {
-    public static string Template => "/employee";
+    public static string Template => "/employees";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
