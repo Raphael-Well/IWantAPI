@@ -1,6 +1,6 @@
 ﻿namespace IWantAPI.Endpoints.Categories;
 
-public class CategoryRequest
+public class ProductRequest
 {
     public string Name { get; set; }
     public bool Active { get; set; }
