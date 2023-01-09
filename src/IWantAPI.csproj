@@ -7,21 +7,26 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<Using Include="Flunt.Notifications"/>
-		<Using Include="Microsoft.AspNetCore.Identity"/>
-		<Using Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
-		<Using Include="Microsoft.EntityFrameworkCore"/>
-		<Using Include="Microsoft.AspNetCore.Authorization"/>
-		<Using Include="System.Security.Claims"/>
-		<Using Include="Flunt.Validations"/>
-		<Using Include="Microsoft.IdentityModel.Tokens"/>
-		<Using Include="System.IdentityModel.Tokens.Jwt"/>
-		<Using Include="System.Text"/>
+		<Using Include="Flunt.Notifications" />
+		<Using Include="Microsoft.AspNetCore.Identity" />
+		<Using Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+		<Using Include="Microsoft.EntityFrameworkCore" />
+		<Using Include="Microsoft.AspNetCore.Authorization" />
+		<Using Include="System.Security.Claims" />
+		<Using Include="Flunt.Validations" />
+		<Using Include="Microsoft.IdentityModel.Tokens" />
+		<Using Include="System.IdentityModel.Tokens.Jwt" />
+		<Using Include="System.Text" />
+		<Using Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<Using Include="Microsoft.AspNetCore.Diagnostics" />
+		<Using Include="Microsoft.Data.SqlClient" />
 
-		<Using Include="IWantAPI.Domain.Products"/>
-		<Using Include="IWantAPI.Infra.Data"/>
-		<Using Include="Microsoft.AspNetCore.Mvc"/>
-		<Using Include="IWantAPI.Endpoints.Employees"/>
+		<Using Include="IWantAPI.Domain.Products" />
+		<Using Include="IWantAPI.Infra.Data" />
+		<Using Include="Microsoft.AspNetCore.Mvc" />
+		<Using Include="IWantAPI.Endpoints.Employees" />
+		<Using Include="IWantAPI.Endpoints.Categories" />
+		<Using Include="IWantAPI.Endpoints.Security" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -36,6 +41,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
+    <PackageReference Include="Serilog.AspnetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 

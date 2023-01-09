@@ -1,14 +1,5 @@
-using IWantAPI.Endpoints.Categories;
-using IWantAPI.Endpoints.Employees;
-using IWantAPI.Endpoints.Security;
-using IWantAPI.Infra.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,12 +34,14 @@ builder.Services.AddAuthentication(x =>
     {
         ValidateActor = true,
         ValidateAudience = true,
+        ValidateIssuer = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.FromMinutes(10),
+        ClockSkew = TimeSpan.Zero,
         ValidIssuer = builder.Configuration["JwtBearerTokenSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtBearerTokenSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SecretKey"]))
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerTokenSettings:SecretKey"]))
     };
 });
 
@@ -56,6 +49,19 @@ builder.Services.AddScoped<QueryAllUsersWithClaimName>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Host.UseSerilog((context, configuration) =>
+{
+    _ = configuration
+        .WriteTo.Console()
+        .WriteTo.MSSqlServer(
+            context.Configuration["ConnectionString:IWantDb"],
+              sinkOptions: new MSSqlServerSinkOptions()
+              {
+                  AutoCreateSqlTable = true,
+                  TableName = "LogAPI"
+              });
+});
 
 var app = builder.Build();
 

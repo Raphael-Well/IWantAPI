@@ -7,40 +7,47 @@ public class TokenPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static IResult Action(LoginRequest loginRequest,IConfiguration configuration, UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(
+        LoginRequest loginRequest,
+        IConfiguration configuration,
+        UserManager<IdentityUser> userManager,
+        ILogger<TokenPost> log,
+        IWebHostEnvironment environment)
     {
-        var user = userManager.FindByEmailAsync(loginRequest.Email).Result;
+        log.LogInformation("Getting token");
+
+        var user = await userManager.FindByEmailAsync(loginRequest.Email);
         if (user == null)
             Results.BadRequest();
-        if(!userManager.CheckPasswordAsync(user, loginRequest.Password).Result)
-        {
+        if (!await userManager.CheckPasswordAsync(user, loginRequest.Password))
             Results.BadRequest();
-        }
 
-        var claims = userManager.GetClaimsAsync(user).Result;
+        var claims = await userManager.GetClaimsAsync(user);
         var subject = new ClaimsIdentity(new Claim[]
         {
-                new Claim(ClaimTypes.Email, loginRequest.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-
+            new Claim(ClaimTypes.Email, loginRequest.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
         });
         subject.AddClaims(claims);
 
         var key = Encoding.ASCII.GetBytes(configuration["JwtBearerTokenSettings:SecretKey"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-           Subject = subject,
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            Subject = subject,
+            SigningCredentials =
+                new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Audience = configuration["JwtBearerTokenSettings:Audience"],
             Issuer = configuration["JwtBearerTokenSettings:Issuer"],
-            Expires = DateTime.UtcNow.AddSeconds(30)
+            Expires = environment.IsDevelopment() || environment.IsStaging() ?
+                DateTime.UtcNow.AddYears(1) : DateTime.UtcNow.AddMinutes(2)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return Results.Ok(new
         {
-            Token = tokenHandler.WriteToken(token),
+            token = tokenHandler.WriteToken(token)
         });
     }
 }
