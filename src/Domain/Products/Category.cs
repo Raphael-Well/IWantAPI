@@ -1,8 +1,4 @@
-﻿using Flunt.Validations;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Diagnostics.Contracts;
-
-namespace IWantAPI.Domain.Products;
+﻿namespace IWantAPI.Domain.Products;
 
 public class Category : Entity
 {

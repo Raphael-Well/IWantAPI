@@ -1,8 +1,4 @@
-﻿using IWantAPI.Domain.Products;
-using IWantAPI.Infra.Data;
-using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace IWantAPI.Endpoints.Categories;
 
