@@ -1,2 +1,2 @@
 # IWantAPI
-A Repository to learn about .NET 7  and WebApi
+A Sample of .NET 7  and WebApi using minimal api
